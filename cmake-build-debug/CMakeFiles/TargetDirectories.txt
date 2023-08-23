@@ -1,3 +1,0 @@
-A:/CS/3 Second/Adv Operating system/Assignments/1/Deadlock-Avoidance_For-Banker-Algorithm/cmake-build-debug/CMakeFiles/1.dir
-A:/CS/3 Second/Adv Operating system/Assignments/1/Deadlock-Avoidance_For-Banker-Algorithm/cmake-build-debug/CMakeFiles/edit_cache.dir
-A:/CS/3 Second/Adv Operating system/Assignments/1/Deadlock-Avoidance_For-Banker-Algorithm/cmake-build-debug/CMakeFiles/rebuild_cache.dir
