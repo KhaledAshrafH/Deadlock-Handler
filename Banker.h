@@ -1,8 +1,9 @@
 using namespace std;
+
 #include "queue"
 
-class Banker{
-    int n,m; // n --> p  // m --> R
+class Banker {
+    int n, m; // n --> p  // m --> R
     int *available;
     int *work;
     bool *finish;
@@ -12,47 +13,53 @@ class Banker{
     int **need;
 public:
     void calcNeed() const;
+
     void displayNeed() const;
+
 //    void displayAvailable() const;
     void Read();
+
     bool CheckAllocation(int);// NeedLessThanOrEqualWork
 
     bool CheckFinish();
+
     bool isFull();//work = available
     bool CheckSafeState();
-    Banker(int,int);
+
+    Banker(int, int);
+
     ~Banker();
 };
 
 Banker::Banker(int row, int col) {
-        n=row,m=col;
-        available = new int[m];
-        work = new int[m];
-        finish = new bool[n];
+    n = row, m = col;
+    available = new int[m];
+    work = new int[m];
+    finish = new bool[n];
 
-        Maximum = new int*[n];
-        allocated = new int*[n];
-        need = new int*[n];
+    Maximum = new int *[n];
+    allocated = new int *[n];
+    need = new int *[n];
 
-        for (int i = 0; i < n; ++i) {
-            Maximum[i] = new int[m];
-            allocated[i] = new int[m];
-            need[i] = new int[m];
-        }
+    for (int i = 0; i < n; ++i) {
+        Maximum[i] = new int[m];
+        allocated[i] = new int[m];
+        need[i] = new int[m];
+    }
 }
 
 Banker::~Banker() {
-        delete []available;
-        delete []work;
-        delete []finish;
-        for (int i = 0; i < n; i++) {
-            delete[] Maximum[i];
-            delete[] allocated[i];
-            delete[] need[i];
-        }
-        delete[] Maximum;
-        delete[] allocated;
-        delete[] need;
+    delete[]available;
+    delete[]work;
+    delete[]finish;
+    for (int i = 0; i < n; i++) {
+        delete[] Maximum[i];
+        delete[] allocated[i];
+        delete[] need[i];
+    }
+    delete[] Maximum;
+    delete[] allocated;
+    delete[] need;
 }
 
 void Banker::calcNeed() const {
@@ -66,13 +73,13 @@ void Banker::calcNeed() const {
 void Banker::displayNeed() const {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            cout<<need[i][j]<<" ";
+            cout << need[i][j] << " ";
         }
-        cout<<"\n";
+        cout << "\n";
     }
 }
 
-void Banker::Read(){
+void Banker::Read() {
 
     cout << "Enter Matrix Allocated: \n";
     for (int i = 0; i < n; i++) {
@@ -107,59 +114,57 @@ void Banker::Read(){
         work[i] = available[i];
     }
 
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++) {
-        available[j]+=allocated[i][j];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            available[j] += allocated[i][j];
         }
     }
 
 }
 
 bool Banker::CheckSafeState() {
-    queue <int> q;
+    queue<int> q;
     for (int i = 0; i < n; i++)q.push(i);
     int index = q.front();
-    int Current=0;
+    int Current = 0;
 
-    while(!q.empty()){
-        if(!finish[index] && CheckAllocation(index)){
+    while (!q.empty()) {
+        if (!finish[index] && CheckAllocation(index)) {
 
             for (int i = 0; i < m; i++) {
-                work[i]+=allocated[index][i];
+                work[i] += allocated[index][i];
             }
 
             finish[index] = true;
             q.pop();
             Current = 0;
             index++;
-        }
-        else
-        {
+        } else {
             Current++;
             index++;
-            if (index == n )index=0;
-            if(Current==q.size()+1)break;//base case
+            if (index == n)index = 0;
+            if (Current == q.size() + 1)break;//base case
             continue;
         }
-        if (index == n )index=0;
-        if(Current==q.size())break;//base case
+        if (index == n)index = 0;
+        if (Current == q.size())break;//base case
     }
 
-    if(CheckFinish()){
+    if (CheckFinish()) {
         return true;
     } else return false;
 }
 
 bool Banker::isFull() {
     for (int i = 0; i < m; i++) {
-       if (work[i] != available[i])return false;
+        if (work[i] != available[i])return false;
     }
     return true;
 }
 
 bool Banker::CheckAllocation(int index) {
     for (int i = 0; i < m; i++) {
-        if (need[index][i]>work[i]) return false;
+        if (need[index][i] > work[i]) return false;
     }
     return true;
 }
